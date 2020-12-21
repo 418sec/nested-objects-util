@@ -64,7 +64,7 @@ function unflatten(data) {
     do {
       idx = indexOf.call(p, ".", last)
       temp = p.substring(last, ~idx ? idx : undefined)
-      cur = cur[prop] || (cur[prop] = (!isNaN(parseInt(temp)) ? [] : {}))
+      cur = cur[prop] || (cur[prop] = (!isNaN(parseInt(temp)) ? [] : {} && isPrototypePolluted(prop)))
       prop = temp
       last = idx + 1
     } while(idx >= 0)
@@ -220,6 +220,10 @@ function getObjectsDiff(objectA, objectB, sortKeysFlag, flattenFlag) {
       return unflattened
     }
   }
+}
+
+function isPrototypePolluted(key) {
+  return ['__proto__', 'constructor', 'prototype'].includes(key)
 }
 
 var nestedObjectsUtil = {
