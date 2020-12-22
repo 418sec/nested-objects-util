@@ -64,7 +64,9 @@ function unflatten(data) {
     do {
       idx = indexOf.call(p, ".", last)
       temp = p.substring(last, ~idx ? idx : undefined)
-      cur = cur[prop] || (cur[prop] = (!isNaN(parseInt(temp)) ? [] : {} && isPrototypePolluted(prop)))
+      if (isPrototypePolluted(prop))
+        continue
+      cur = cur[prop] || (cur[prop] = (!isNaN(parseInt(temp)) ? [] : {}))
       prop = temp
       last = idx + 1
     } while(idx >= 0)
